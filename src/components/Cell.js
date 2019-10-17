@@ -18,7 +18,6 @@ class Cell extends Component {
   }
 
   handleOnCellClick() {
-    console.log("clicked");
     if (!this.state.alive) {
       // if dead then proceed add some color to the Cell's life :) and notify server of event
       this.setState(
@@ -33,7 +32,6 @@ class Cell extends Component {
             key: [this.props.cell_row_index, this.props.cell_col_index],
             color: { r: this.state.r, g: this.state.g, b: this.state.b }
           });
-          console.log("emitted");
         }
       );
     }
