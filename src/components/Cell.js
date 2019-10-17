@@ -9,10 +9,10 @@ class Cell extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      r: this.props.clickedColorProps[0],
-      g: this.props.clickedColorProps[1],
-      b: this.props.clickedColorProps[2],
-      alive: this.props.aliveProps
+      r: 255,
+      g: 255,
+      b: 255,
+      alive: false
     };
     this.handleOnCellClick = this.handleOnCellClick.bind(this);
   }
@@ -22,9 +22,9 @@ class Cell extends Component {
       // if dead then proceed add some color to the Cell's life :) and notify server of event
       this.setState(
         {
-          r: this.props.colorProps[0],
-          g: this.props.colorProps[1],
-          b: this.props.colorProps[2],
+          r: this.props.defaultRandomColorProps[0],
+          g: this.props.defaultRandomColorProps[1],
+          b: this.props.defaultRandomColorProps[2],
           alive: true
         },
         () => {
@@ -49,45 +49,39 @@ class Cell extends Component {
 
   // Events are decoupled from one another
   componentDidMount() {
-    // const current_this = this;
-    // this.props.socketProps.on("newGameState", function(data) {
-    //   data.map(obj => {
-    //     if (
-    //       obj.ind[0] === current_this.props.cell_row_index &&
-    //       obj.ind[1] === current_this.props.cell_col_index
-    //     ) {
-    //       current_this.reviveCell(obj.color);
-    //     }
-    //   });
-    // });
-    // this.props.socketProps.on("deadCells", function(data) {
-    //   data.map(ind => {
-    //     if (
-    //       ind[0] === current_this.props.cell_row_index &&
-    //       ind[1] === current_this.props.cell_col_index
-    //     ) {
-    //       current_this.killCell();
-    //     }
-    //   });
-    // });
-    // this.props.socketProps.on("newCells", function(data) {
-    //   data.map(obj => {
-    //     if (
-    //       obj.ind[0] === current_this.props.cell_row_index &&
-    //       obj.ind[1] === current_this.props.cell_col_index
-    //     ) {
-    //       current_this.reviveCell(obj.color);
-    //     }
-    //   });
-    // });
-    // this.props.socketProps.on("otherChangedCell", function(data) {
-    //   if (
-    //     data.ind[0] === current_this.props.cell_row_index &&
-    //     data.ind[1] === current_this.props.cell_col_index
-    //   ) {
-    //     current_this.reviveCell(data.color);
-    //   }
-    // });
+    const current_this = this;
+    this.props.socketProps.on("newGameState", function(data) {
+      data.map(obj => {
+        if (
+          obj.ind[0] === current_this.props.cell_row_index &&
+          obj.ind[1] === current_this.props.cell_col_index
+        ) {
+          current_this.reviveCell(obj.color);
+        }
+      });
+    });
+    this.props.socketProps.on("changedCells", function(data) {
+      data.map((arr, a_ind) =>
+        arr.map(obj => {
+          if (
+            obj.ind[0] === current_this.props.cell_row_index &&
+            obj.ind[1] === current_this.props.cell_col_index
+          ) {
+            a_ind === 0
+              ? current_this.killCell()
+              : current_this.reviveCell(obj.color);
+          }
+        })
+      );
+    });
+    this.props.socketProps.on("otherChangedCell", function(data) {
+      if (
+        data.ind[0] === current_this.props.cell_row_index &&
+        data.ind[1] === current_this.props.cell_col_index
+      ) {
+        current_this.reviveCell(data.color);
+      }
+    });
   }
 
   render() {

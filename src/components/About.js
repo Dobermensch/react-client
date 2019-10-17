@@ -20,27 +20,32 @@ class About extends React.Component {
           <div style={p_container}>
             <p>This is a multiplayer game based on the following 4 rules:</p>
 
-            <ul>
-              <li>
-                Any live cell with fewer than two live neighbors dies, as if
-                caused by under-population.
-              </li>
-              <li>
-                Any live cell with two or three live neighbors lives on to the
-                next generation.
-              </li>
-              <li>
-                Any live cell with more than three live neighbors dies, as if by
-                overcrowding.
-              </li>
-              <li>
-                Any dead cell with exactly three live neighbors becomes a live
-                cell, as if by reproduction.
-              </li>
-            </ul>
+            <p>
+              1. Any live cell with fewer than two live neighbors dies, as if
+              caused by under-population.
+            </p>
+            <p>
+              2. Any live cell with two or three live neighbors lives on to the
+              next generation.
+            </p>
+            <p>
+              3. Any live cell with more than three live neighbors dies, as if
+              by overcrowding.
+            </p>
+            <p>
+              4. Any dead cell with exactly three live neighbors becomes a live
+              cell, as if by reproduction.
+            </p>
+
+            <p>
+              Play with others or play with yourself by opening multiple windows
+            </p>
 
             <p>Click on a cell to bring it to life.</p>
-            <p>The cells evolve every 10 seconds</p>
+
+            <p>
+              <b>The cells evolve every 10 seconds</b>
+            </p>
           </div>
         </div>
       </div>
