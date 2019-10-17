@@ -20,7 +20,9 @@ class Game extends React.Component {
     super(props);
 
     if (!socket) {
-      socket = openSocket(process.env.REACT_APP_API_URL.toString());
+      socket = openSocket(
+        `${process.env.REACT_APP_API_URL.toString()}:${process.env.PORT}`
+      );
     }
 
     const color = [1, 1, 1].map(num => num * Math.floor(Math.random() * 254));
