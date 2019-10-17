@@ -24,7 +24,6 @@ class Game extends React.Component {
     }
 
     const color = [1, 1, 1].map(num => num * Math.floor(Math.random() * 254));
-    console.log(color);
 
     const rows = [];
 
@@ -55,8 +54,8 @@ class Game extends React.Component {
                 return (
                   <Cell
                     key={[r_ind, c_ind]}
-                    cell_row_index={r_ind}
-                    cell_col_index={c_ind}
+                    cell_row_index={c_ind}
+                    cell_col_index={r_ind}
                     socketProps={socket}
                     defaultRandomColorProps={this.state.color}
                     aliveProps={col.alive}

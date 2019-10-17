@@ -61,6 +61,8 @@ class Cell extends Component {
       });
     });
     this.props.socketProps.on("changedCells", function(data) {
+      console.log("received CHANGED CELLS");
+      console.log(data);
       data.map((arr, a_ind) =>
         arr.map(obj => {
           if (
@@ -79,6 +81,8 @@ class Cell extends Component {
         data.ind[0] === current_this.props.cell_row_index &&
         data.ind[1] === current_this.props.cell_col_index
       ) {
+        console.log("received other cell change");
+        console.log(data);
         current_this.reviveCell(data.color);
       }
     });
