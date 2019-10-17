@@ -62,8 +62,8 @@ class Cell extends Component {
       });
     });
     this.props.socketProps.on("changedCells", function(data) {
-      console.log("received CHANGED CELLS");
-      console.log(data);
+      // console.log("received CHANGED CELLS");
+      // console.log(data);
       data.map((arr, a_ind) =>
         arr.map(obj => {
           if (

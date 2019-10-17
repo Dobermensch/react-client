@@ -39,6 +39,13 @@ class Game extends React.Component {
     this.state = { board: rows, color: color };
   }
 
+  componentDidMount() {
+    socket.on("newGameState", function(data) {
+      console.log("received newGame State");
+      console.log(data);
+    });
+  }
+
   componentWillUnmount() {
     socket.disconnect();
     socket = null;
