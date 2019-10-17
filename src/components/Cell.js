@@ -18,8 +18,10 @@ class Cell extends Component {
   }
 
   handleOnCellClick() {
+    // console.log("clicked");
     if (!this.state.alive) {
       // if dead then proceed add some color to the Cell's life :) and notify server of event
+      // console.log("cell wasn't alive");
       this.setState(
         {
           r: this.props.defaultRandomColorProps[0],
@@ -83,7 +85,7 @@ class Cell extends Component {
         data.ind[1] === current_this.props.cell_col_index
       ) {
         console.log("received other cell change");
-        console.log(data);
+        // console.log(data);
         current_this.reviveCell(data.color);
       }
     });
