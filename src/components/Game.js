@@ -7,13 +7,11 @@ Game component that opens socket connection to server and sets up the client wit
 import React from "react";
 import openSocket from "socket.io-client";
 import Cell from "./Cell";
+import Toast from "./Toast";
 
 let socket;
-const n_of_rows = 50;
-const n_of_cols = 50;
-const container_style = {
-  paddingTop: "5vh"
-};
+const n_of_rows = parseInt(process.env.REACT_APP_N_ROWS || 50);
+const n_of_cols = parseInt(process.env.REACT_APP_N_COLS || 50);
 
 class Game extends React.Component {
   constructor(props) {
@@ -23,10 +21,10 @@ class Game extends React.Component {
       socket = openSocket(`${process.env.REACT_APP_API_URL}`);
     }
 
-    const color = [1, 1, 1].map(num => num * Math.floor(Math.random() * 254));
+    // What's happening here? ;)
+    const color = [1, 1, 1].map(num => num * Math.floor(Math.random() * 256));
 
     const rows = [];
-
     for (let r = 0; r < n_of_rows; r++) {
       let cols = [];
       for (let c = 0; c < n_of_cols; c++) {
@@ -46,7 +44,7 @@ class Game extends React.Component {
 
   render() {
     return (
-      <div className="boardContainer" style={container_style}>
+      <div className="boardContainer">
         {this.state.board.map((row, r_ind) => {
           return (
             <div className="row" key={r_ind}>
@@ -58,13 +56,13 @@ class Game extends React.Component {
                     cell_col_index={r_ind}
                     socketProps={socket}
                     defaultRandomColorProps={this.state.color}
-                    aliveProps={col.alive}
                   />
                 );
               })}
             </div>
           );
         })}
+        <Toast socketProps={socket} />
       </div>
     );
   }

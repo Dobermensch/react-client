@@ -15,13 +15,12 @@ class Cell extends Component {
       alive: false
     };
     this.handleOnCellClick = this.handleOnCellClick.bind(this);
+    this.amITheChosenOne = this.amITheChosenOne.bind(this);
   }
 
   handleOnCellClick() {
-    // console.log("clicked");
     if (!this.state.alive) {
       // if dead then proceed add some color to the Cell's life :) and notify server of event
-      // console.log("cell wasn't alive");
       this.setState(
         {
           r: this.props.defaultRandomColorProps[0],
@@ -50,28 +49,23 @@ class Cell extends Component {
     this.setState({ r: color[0], g: color[1], b: color[2], alive: true });
   }
 
-  // Events are decoupled from one another
+  // Events listeners
+  // Each cell receives the data and if the data is meant for it, it changes accordingly
   componentDidMount() {
     const current_this = this;
     this.props.socketProps.on("newGameState", function(data) {
       data.map(obj => {
-        if (
-          obj.ind[0] === current_this.props.cell_row_index &&
-          obj.ind[1] === current_this.props.cell_col_index
-        ) {
+        if (current_this.amITheChosenOne(obj.ind[0], obj.ind[1])) {
           current_this.reviveCell(obj.color);
         }
       });
     });
     this.props.socketProps.on("changedCells", function(data) {
-      // console.log("received CHANGED CELLS");
-      // console.log(data);
+      // data is an array of two arrays
       data.map((arr, a_ind) =>
         arr.map(obj => {
-          if (
-            obj.ind[0] === current_this.props.cell_row_index &&
-            obj.ind[1] === current_this.props.cell_col_index
-          ) {
+          if (current_this.amITheChosenOne(obj.ind[0], obj.ind[1])) {
+            // if the obj is in the first array, kill the cell otherwise revive it
             a_ind === 0
               ? current_this.killCell()
               : current_this.reviveCell(obj.color);
@@ -80,26 +74,29 @@ class Cell extends Component {
       );
     });
     this.props.socketProps.on("otherChangedCell", function(data) {
-      if (
-        data.ind[0] === current_this.props.cell_row_index &&
-        data.ind[1] === current_this.props.cell_col_index
-      ) {
-        console.log("received other cell change");
-        // console.log(data);
+      if (current_this.amITheChosenOne(data.ind[0], data.ind[1])) {
         current_this.reviveCell(data.color);
       }
     });
   }
 
+  amITheChosenOne(obj_row, obj_col) {
+    return (
+      obj_row === this.props.cell_row_index &&
+      obj_col === this.props.cell_col_index
+    );
+  }
+
   render() {
+    let { r, g, b } = this.state;
     return (
       <div
         style={{
-          backgroundColor: `rgb(${this.state.r}, ${this.state.g}, ${this.state.b})`
+          backgroundColor: `rgb(${r}, ${g}, ${b})`
         }}
         className="cellContainer"
         onClick={this.handleOnCellClick}
-      ></div>
+      />
     );
   }
 }

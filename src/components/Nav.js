@@ -2,8 +2,12 @@ import React, { Component } from "react";
 import "../styles/App.css";
 import { Link } from "react-router-dom";
 
-const navStyle = {
-  color: "white"
+const navLinkStyle = {
+  color: "#aaa",
+  display: "block",
+  lineHeight: "56px",
+  padding: "0 24px",
+  textDecoration: "none"
 };
 
 class Nav extends Component {
@@ -12,10 +16,13 @@ class Nav extends Component {
       <nav>
         <h3>Conway's Game of Life</h3>
         <ul className="nav-links">
-          <Link style={navStyle} to="/about">
+          <Link style={navLinkStyle} to="/">
+            <li>Home</li>
+          </Link>
+          <Link style={navLinkStyle} to="/about">
             <li>About</li>
           </Link>
-          <Link style={navStyle} to="/game">
+          <Link style={navLinkStyle} to="/game">
             <li>Game</li>
           </Link>
         </ul>
